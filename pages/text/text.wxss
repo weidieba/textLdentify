@@ -1,0 +1,16 @@
+/* pages/text/text.wxss */
+.identify-text {
+  width: 100%;
+  height: auto;
+}
+button {
+  width: 200rpx;
+  height: 40px;
+  font-size: 30rpx;
+}
+.identify-handle {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+
+}

@@ -1,0 +1,10 @@
+<view class="identify-text">
+  <view>
+    {{text}}
+  </view>
+  <view class="identify-handle">
+    <button bindtap="hanlerCopy">复制</button>
+    <!-- <button open-type="share">分享好友</button> -->
+  </view>
+  
+</view>

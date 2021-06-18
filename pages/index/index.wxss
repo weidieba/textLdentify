@@ -1,19 +1,20 @@
-/**index.wxss**/
-.userinfo {
+.container {
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  color: #aaa;
+  background: #292929;
 }
 
-.userinfo-avatar {
-  overflow: hidden;
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
+.navigate {
+  width: 200rpx;
+  height: 200rpx;
+  display: flex;
+  border: 4rpx solid #fff5f7;
+  line-height: 200rpx;
+  color: #fff5f7;
   border-radius: 50%;
-}
-
-.usermotto {
-  margin-top: 200px;
+  font-size: 16px;
+  padding: 10px;
 }

@@ -1,4 +1,5 @@
 <!--index.wxml-->
 <view class="container">
   <view bindtap='testImage' class="navigate">识别图片文字</view>
+  <view bindtap="testCloudF" class="navigate">测试云函数</view>
 </view>

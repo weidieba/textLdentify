@@ -1,12 +1,15 @@
 // app.js
+var cloudInited = false;
 App({
   onLaunch() {
     let that = this;
+    wx.cloud.init()
     //  百度云文字识别
     let expire_time = wx.getStorageSync("access_token");
     if (!expire_time.token) {
         that.getAccessToken()
     }
+    
   },
   getAccessToken() {
       let current_time = 	Math.round(new Date() / 1000);
@@ -32,6 +35,33 @@ App({
           })
       })
   },
+    // app.js   封装了全局函数
+    /**
+     * 调用云函数
+     * @param {*} name         云函数名称
+     * @param {*} data          参数
+     * @param {*} callBack 
+     */
+    callCloud  (name, data, callBack){
+        if(!cloudInited) {
+            wx.cloud.init();
+            cloudInited = true
+            console.debug(`初始化云开发环境...`)
+        }
+        console.debug(`开始执行云函数调用 name=${name} ...`)
+        
+        wx.cloud.callFunction({
+            name,
+            data,
+            success: (res)=>{
+                console.debug(`来自云函数${name}的调用结果：`, res)
+                callBack(res)
+            },
+            fail: err=>{
+                console.error("云函数调用失败", err.errCode, err.errMsg)
+            }
+        })
+    },
   globalData: {
     imgSrc: '',
     textData:  [{

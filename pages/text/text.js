@@ -1,5 +1,6 @@
 //获取应用实例
 const app = getApp()
+import uuid from '../../utils/uuid';
 Page({
 
   /**
@@ -68,7 +69,17 @@ Page({
       }
     })
   },
-
+  addSql() {
+    let that = this;
+    let id = 'text' + uuid();
+    console.log()
+    getApp().callCloud("create", {
+      _id: id,
+      copyText: that.data.text
+    }, res=>{
+      console.log(res)
+  })
+  },
   /**
    * 用户点击右上角分享
    */

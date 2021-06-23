@@ -72,7 +72,6 @@ Page({
   addSql() {
     let that = this;
     let id = 'text' + uuid();
-    console.log()
     getApp().callCloud("create", {
       _id: id,
       copyText: that.data.text

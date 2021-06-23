@@ -46,10 +46,8 @@ App({
         if(!cloudInited) {
             wx.cloud.init();
             cloudInited = true
-            console.debug(`初始化云开发环境...`)
         }
         console.debug(`开始执行云函数调用 name=${name} ...`)
-        
         wx.cloud.callFunction({
             name,
             data,

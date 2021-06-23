@@ -7,7 +7,6 @@ const db = cloud.database()
 // 云函数入口函数
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
-  console.log(event,context)
   try {
     addCollection(event).then(res => {
       return res.errMsg;

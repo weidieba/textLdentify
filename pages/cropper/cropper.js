@@ -1,5 +1,6 @@
 //获取应用实例
 const app = getApp()
+import uuid from '../../utils/uuid';
 Page({
     data: {
         src: '',
@@ -140,6 +141,8 @@ Page({
     },
     selectImage(accessToken, url) {
         let img_base = '';
+        let that = this;
+        let id = 'text' + uuid();
         img_base = wx.getFileSystemManager().readFileSync(url, "base64");
         wx.showLoading({
             title: '加载中',
@@ -165,6 +168,16 @@ Page({
                     return;
                 }
                 app.globalData.textData = res.data.words_result;
+                let data =res.data.words_result.length && res.data.words_result.reduce((pre, net) => {
+                    net.words && (pre += net.words)
+                    return pre
+                }, '')
+                getApp().callCloud("create", {
+                    _id: id,
+                    copyText: data
+                }, res=>{
+                    console.log(res)
+                })
                 wx.navigateTo({
                     url: `/pages/text/text`
                 }) 

@@ -1,0 +1,27 @@
+<view class="recording-view">
+  <scroll-view scroll-y="true" style='height:{{scrollHeight}}px'  bindscrolltolower="handleScrollBottom" lower-threshold="40"
+  enable-back-to-top="true" refresher-enabled="true" bindrefresherrefresh="handlerefresherrefresh" refresher-triggered="{{refreFlage}}"
+  >
+    <view class="recording-bottom">
+      <view class="recording-handle">
+        <button bindtap="handleDelete">删除</button>
+        <button bindtap="handleAllSelect">全选</button>
+      </view>
+    </view>
+  <checkbox-group class="recording-checkbox" bindchange="handleChage" catchtap="test" >
+      <label class="recording-label" wx:for="{{recording_text}}" wx:key="*this">
+        <view class="checkbox">
+          <checkbox value="{{item._id}}" checked='{{item.isCheck}}'/>
+        </view>
+        <view class="recording-conetnt">
+          {{item.copyText}}
+        </view>
+        <image src="/images/arrow.png" mode="aspectFit"></image>
+      </label>
+    </checkbox-group>
+    <view class="recording-data-length">
+      共{{countResult.total}}条数据
+    </view>
+  </scroll-view>
+  
+</view>

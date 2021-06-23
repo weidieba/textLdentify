@@ -3,13 +3,33 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/cropper/cropper",
-    "pages/text/text"
+    "pages/text/text",
+    "pages/recording/recording"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "Weixin",
     "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "backgroundColor": "#ffffff",
+    "color": "#c3c9d8",
+    "selectedColor": "#4a70ff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "/images/sidebar/1-0.png",
+        "selectedIconPath": "/images/sidebar/1-1.png"
+      },
+      {
+        "pagePath": "pages/recording/recording",
+        "text": "识别记录",
+        "iconPath": "/images/sidebar/2-0.png",
+        "selectedIconPath": "/images/sidebar/2-1.png"
+      }
+    ]
   },
   "sitemapLocation": "sitemap.json"
 }

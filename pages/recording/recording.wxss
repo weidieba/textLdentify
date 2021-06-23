@@ -1,0 +1,58 @@
+.recording-view, .recording-checkbox {
+  width: 100%;
+  height: auto;
+  position: relative;
+  padding-bottom: 5rpx;
+}
+.recording-label {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
+  border: 1px solid #EBEDF2;
+  padding: 17px 0px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.recording-conetnt {
+  width: 330px;
+  display: -webkit-box;
+  font-size:28rpx;
+  color:#000000;
+  line-height: 40rpx;
+  word-break: break-all;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp:2;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  padding-left: 3px;
+  padding-right: 14px;
+}
+.recording-label image{
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 3px;
+}
+.recording-bottom {
+  width: 100%;
+  background: #fff;
+  padding-bottom: 15rpx;
+}
+.recording-handle  {
+  width: 100%;
+  display: flex;
+}
+.recording-handle button {
+  width: 60px;
+  height: 40px;
+  margin: 0;
+  margin: 0 10px;
+  font-size: 14px;
+}
+.recording-data-length {
+  width: 100%;
+  font-size: 16px;
+  text-align: center;
+}

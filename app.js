@@ -2,11 +2,15 @@
 App({
   onLaunch() {
     let that = this;
+    // 新版本自动提醒更新
+    that.updateVersion();    
     //  百度云文字识别
     let expire_time = wx.getStorageSync("access_token");
     if (!expire_time.token) {
         that.getAccessToken()
     }
+    //  有token 并且 去判断时间
+    expire_time.token && that.setAccessToken();
   },
   getAccessToken() {
       let current_time = 	Math.round(new Date() / 1000);
@@ -31,6 +35,45 @@ App({
               }
           })
       })
+  },
+  setAccessToken() {
+      console.log('执行了')
+    //  获取当前时间判断是否为存储accesstoken的30天后 如果是 重新写入accesstoken
+    let current_time = 	Math.round(new Date() / 1000);
+    let access_time = wx.getStorageSync("access_token");
+    if (current_time > access_time.time * 1000 * 60 * 60 * 24 * 30) {
+        that.getAccessToken();
+    }
+  },
+  updateVersion() {
+    var self = this;
+    // 获取小程序更新机制兼容
+    if (wx.canIUse('getUpdateManager')) {
+      const updateManager = wx.getUpdateManager()
+      //1. 检查小程序是否有新版本发布
+      updateManager.onCheckForUpdate(function(res) {
+        // 请求完新版本信息的回调
+        if (res.hasUpdate) {
+          //2. 小程序有新版本，则静默下载新版本，做好更新准备
+          updateManager.onUpdateReady(function() {
+            updateManager.applyUpdate()
+          })
+          updateManager.onUpdateFailed(function() {
+            // 新的版本下载失败
+            wx.showModal({
+              title: '已经有新版本了哟~',
+              content: '新版本已经上线啦~，请您删除当前小程序，重新搜索打开哟~',
+            })
+          })
+        }
+      })
+    } else {
+      // 如果希望用户在最新版本的客户端上体验您的小程序，可以这样子提示
+      wx.showModal({
+        title: '提示',
+        content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+      })
+    }
   },
   globalData: {
     imgSrc: '',

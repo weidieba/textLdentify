@@ -3,10 +3,10 @@ const app = getApp()
 Page({
     data: {
         src: '',
-        width: 250, //宽度
-        height: 250, //高度
-        max_width: 300,
-        max_height: 300,
+        width: 350, //宽度
+        height: 500, //高度
+        max_width: 900,
+        max_height: 900,
         disable_rotate: true, //是否禁用旋转
         disable_ratio: false, //锁定比例
         limit_move: true, //是否限制移动

@@ -57,17 +57,19 @@ Page({
   getRecording() {
     let that = this;
     let dataCopy = that.data.recording_text;
+    let _openid =  wx.getStorageSync('openid');
     const MAX_LIMIT = 10;
     this.getCollectionCount();
     wx.showLoading({
       title: '加载中',
     })
     const db = wx.cloud.database();
-    db.collection('todos').skip(that.data.skipCount * MAX_LIMIT).limit(10).get().then(res => {
+    db.collection('todos_'+_openid.openid).skip(that.data.skipCount * MAX_LIMIT).limit(10).get().then(res => {
       wx.hideLoading();
       if (res.errMsg !== 'collection.get:ok') {
         return;
       }
+      console.log(res)
       let _data = res.data.length && res.data.filter((item, index) => {
         if (item.copyText) {
           item.isCheck = false;
@@ -76,7 +78,7 @@ Page({
         }
       });
       that.setData({
-        recording_text: dataCopy.concat(_data)
+        recording_text: _data ? dataCopy.concat(_data) : dataCopy
       })
     }).catch(err => {
       console.error(err);

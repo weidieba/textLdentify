@@ -5,3 +5,4 @@ yarn-error.log
 .idea/
 package-lock.json
 .vscode/
+*.node_modules

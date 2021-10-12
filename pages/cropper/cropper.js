@@ -4,10 +4,10 @@ import uuid from '../../utils/uuid';
 Page({
     data: {
         src: '',
-        width: 250, //宽度
-        height: 250, //高度
-        max_width: 300,
-        max_height: 300,
+        width: 350, //宽度
+        height: 500, //高度
+        max_width: 900,
+        max_height: 900,
         disable_rotate: true, //是否禁用旋转
         disable_ratio: false, //锁定比例
         limit_move: true, //是否限制移动
@@ -20,13 +20,13 @@ Page({
         if(!options.imgSrc){
             this.cropper.upload(); //上传图片
         }
+        
     },
     cropperload(e) {
         console.log('cropper加载完成');
     },
     loadimage(e) {
         wx.hideLoading();
-        console.log('图片');
         this.cropper.imgReset();
     },
     clickcut(e) {
@@ -147,6 +147,7 @@ Page({
         wx.showLoading({
             title: '加载中',
         })
+        let _openid =  wx.getStorageSync('openid');
         img_base && wx.request({
             url: `https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic?access_token=${accessToken.token}`,
             method: 'POST',
@@ -172,12 +173,15 @@ Page({
                     net.words && (pre += net.words)
                     return pre
                 }, '')
+                // 云函数创建数据 
                 getApp().callCloud("create", {
                     _id: id,
-                    copyText: data
+                    copyText: data,
+                    openid: _openid.openid
                 }, res=>{
                     console.log(res)
                 })
+                
                 wx.navigateTo({
                     url: `/pages/text/text`
                 }) 

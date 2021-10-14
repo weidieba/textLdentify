@@ -33,11 +33,15 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.getRecording();
     let scrollHeight = wx.getSystemInfoSync().windowHeight;
     this.setData({
       scrollHeight: scrollHeight
     });
+    this.setData({
+        skipCount: 0
+    });
+    this.getRecording();
+    console.log('设置data', this.data.skipCount)
   },
 
   /**
@@ -59,12 +63,13 @@ Page({
     let dataCopy = that.data.recording_text;
     let _openid =  wx.getStorageSync('openid');
     const MAX_LIMIT = 10;
-    this.getCollectionCount();
+    this.getCollectionCount(_openid);
     wx.showLoading({
       title: '加载中',
     })
     const db = wx.cloud.database();
-    db.collection('todos_'+_openid.openid).skip(that.data.skipCount * MAX_LIMIT).limit(10).get().then(res => {
+    console.log('skipCount',that.data.skipCount)
+    db.collection('todos_'+_openid).skip(that.data.skipCount * MAX_LIMIT).limit(10).get().then(res => {
       wx.hideLoading();
       if (res.errMsg !== 'collection.get:ok') {
         return;
@@ -78,7 +83,7 @@ Page({
         }
       });
       that.setData({
-        recording_text: _data ? dataCopy.concat(_data) : dataCopy
+        recording_text: _data ? dataCopy.concat(_data) : _data
       })
     }).catch(err => {
       console.error(err);
@@ -92,23 +97,34 @@ Page({
   },
   handleDelete() {
     let that = this;
-    if (!this.data.checkVal.length) {
-      wx.showToast({
-        title: '请选择识别记录',
-        icon: "error"
-      })
-      return;
-    }
-    getApp().callCloud("delete", {
-        checkVal: that.data.checkVal
-      }, res=>{
-        if (res.errMsg === 'cloud.callFunction:ok') {
-          wx.showToast({
-            title: '删除成功',
-          })
-          that.getRecording();
+    let _openid =  wx.getStorageSync('openid');
+    wx.showModal({
+      title: '是否要删除记录',
+      content:'删除后识别记录将无法恢复',
+      success (res) {
+        if (!res.confirm) {
+          return;
         }
-        console.log('delete',res)
+        if (!that.data.checkVal.length) {
+          wx.showToast({
+            title: '请选择识别记录',
+            icon: "error"
+          })
+          return;
+        }
+        getApp().callCloud("delete", {
+            checkVal: that.data.checkVal,
+            openid: _openid
+          }, res=>{
+            if (res.errMsg === 'cloud.callFunction:ok') {
+              wx.showToast({
+                title: '删除成功',
+              })
+              that.getRecording();
+            }
+            console.log('delete',res)
+        })
+      }
     })
   },
   handleAllSelect() {
@@ -135,11 +151,12 @@ Page({
     }
     this.getRecording();
   },
-  async getCollectionCount() {
+  async getCollectionCount(openid) {
     const db = wx.cloud.database();
-    const countResult = await db.collection('todos').count()
-    console.log(countResult)
+    const countResult = await db.collection('todos_' +openid).count()
     const batchTimes = Math.ceil(countResult.total / 100)
+    console.log('batchTimes', batchTimes, countResult)
+
     this.setData({
       skipCount: batchTimes,
       countResult: countResult
@@ -147,6 +164,9 @@ Page({
 
   },
   handlerefresherrefresh() {
+    this.setData({
+      skipCount: 0
+  });
     this.getRecording();
     let that = this;
     setTimeout(() => {

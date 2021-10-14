@@ -28,5 +28,5 @@ exports.main = async (event, context) => {
 }
 
 function deleteData(event) {
-  return db.collection('todos').where({_id: _.in(event.checkVal)}).remove();
+  return db.collection('todos_' + event.openid).where({_id: _.in(event.checkVal)}).remove();
 }

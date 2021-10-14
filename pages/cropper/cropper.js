@@ -177,7 +177,7 @@ Page({
                 getApp().callCloud("create", {
                     _id: id,
                     copyText: data,
-                    openid: _openid.openid
+                    openid: _openid
                 }, res=>{
                     console.log(res)
                 })

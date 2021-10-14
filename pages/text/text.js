@@ -72,9 +72,11 @@ Page({
   addSql() {
     let that = this;
     let id = 'text' + uuid();
+    let _openid =  wx.getStorageSync('openid');
     getApp().callCloud("create", {
       _id: id,
-      copyText: that.data.text
+      copyText: that.data.text,
+      openid: _openid
     }, res=>{
       console.log(res)
   })

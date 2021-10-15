@@ -38,7 +38,8 @@ Page({
       scrollHeight: scrollHeight
     });
     this.setData({
-        skipCount: 0
+        skipCount: 0,
+        recording_text: []
     });
     this.getRecording();
     console.log('设置data', this.data.skipCount)
@@ -82,6 +83,7 @@ Page({
           return item;
         }
       });
+      //  通点问题   下拉加载分页 需要合并数组 但是 下拉刷新得时候 不能 进行合并 
       that.setData({
         recording_text: _data ? dataCopy.concat(_data) : _data
       })
@@ -120,6 +122,7 @@ Page({
               wx.showToast({
                 title: '删除成功',
               })
+              that.handleReset();
               that.getRecording();
             }
             console.log('delete',res)
@@ -142,11 +145,14 @@ Page({
   handleScrollBottom() {
     let that = this;
     let count = 0;
+    let _openid =  wx.getStorageSync('openid');
     if (that.data.artickeThrottle) return;
+    that.getCollectionCount(_openid)
     that.data.artickeThrottle = true;
     setTimeout(() => {that.data.artickeThrottle = false}, 4000);
     that.data.scrollCount++;
-    if (that.data.scrollCount > that.data.skipCount) {
+    console.log('countResult',that.data.countResult)
+    if (that.data.countResult.total < 10 || that.data.scrollCount > that.data.skipCount) {
       return 
     }
     this.getRecording();
@@ -155,7 +161,7 @@ Page({
     const db = wx.cloud.database();
     const countResult = await db.collection('todos_' +openid).count()
     const batchTimes = Math.ceil(countResult.total / 100)
-    console.log('batchTimes', batchTimes, countResult)
+    console.log('batchTimes', batchTimes, this.data.skipCount)
 
     this.setData({
       skipCount: batchTimes,
@@ -164,9 +170,7 @@ Page({
 
   },
   handlerefresherrefresh() {
-    this.setData({
-      skipCount: 0
-  });
+    this.handleReset();
     this.getRecording();
     let that = this;
     setTimeout(() => {
@@ -174,6 +178,25 @@ Page({
         refreFlage: false
       })
     },1000)
+  },
+  // 跳转到详情页
+  handleDetails(event) {
+    console.log(event)
+    let _id = event.target.dataset.id || '';
+    if (!_id) {
+      return;
+    }
+    wx.navigateTo({
+        url: `/pages/text/text?textid=${_id}`
+    })
+  },
+  // 重置数据
+  handleReset() {
+    this.setData({
+      skipCount: 0,
+      scrollCount: 0,
+      recording_text: []
+    });
   },
   /**
    * 页面相关事件处理函数--监听用户下拉动作

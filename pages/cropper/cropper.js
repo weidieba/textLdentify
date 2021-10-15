@@ -1,5 +1,5 @@
 //获取应用实例
-const app = getApp()
+const app = getApp();
 import uuid from '../../utils/uuid';
 Page({
     data: {
@@ -179,12 +179,10 @@ Page({
                     copyText: data,
                     openid: _openid
                 }, res=>{
-                    console.log(res)
+                    wx.navigateTo({
+                        url: `/pages/text/text?textid=${id}`
+                    })
                 })
-                
-                wx.navigateTo({
-                    url: `/pages/text/text`
-                }) 
             },
             fail(err) {
                 console.log(err);

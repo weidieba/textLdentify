@@ -1,0 +1,24 @@
+<!--pages/testPage/testPage.wxml-->
+<view class="page">
+
+    <!-- 
+    <image mode="scaleToFill" src="/images/xingkong-bg.jpg" style="width: {{canvasWidth + 'px'}}; height: {{canvasWidth + 'px'}}" />
+    <canvas type="2d" id="myCanvas" class="my-canvas" style="width: {{canvasWidth + 'px'}}; height: {{canvasWidth + 'px'}}"></canvas>
+    -->
+    <swiper 
+    class="card-swiper" 
+    indicator-dots="{{indicatorShow}}" 
+    circular="{{circular}}" 
+    autoplay="{{autoplay}}" 
+    interval="{{interval}}" 
+    duration="{{duration}}" 
+    indicator-color="{{indicatorColor}}" 
+    indicator-active-color="{{indicatorActiveColor}}"
+    bindchange="cardSwiper">
+        <swiper-item wx:for="{{swiperList}}" wx:key="index" class="{{cardCur == index ? 'cur' : ''}}">
+            <view class="swiper-item" catchtap="selectItem">
+                <image src="{{item}}" mode="aspectFill"></image>
+            </view>
+        </swiper-item>
+    </swiper>
+</view>

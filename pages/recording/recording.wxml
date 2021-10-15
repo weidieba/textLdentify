@@ -16,7 +16,7 @@
         <view class="recording-conetnt">
           {{item.copyText}}
         </view>
-        <image src="/images/arrow.png" mode="aspectFit"></image>
+        <image src="/images/arrow.png" mode="aspectFit" data-id="{{item._id}}" catchtap="handleDetails"></image>
       </label>
     </checkbox-group>
     <view class="recording-data-length">

@@ -15,6 +15,10 @@ App({
     //  有token 并且 去判断时间
     expire_time.token && that.setAccessToken();
   },
+  onShow() {
+    // 新版本自动提醒更新 冷启动时无法触发 onlauch 故再次重新调用版本
+    this.updateVersion();
+  },
   getAccessToken() {
       let current_time = 	Math.round(new Date() / 1000);
       return new Promise((resolve) => {
@@ -116,38 +120,6 @@ App({
   },
   globalData: {
     imgSrc: '',
-    textData:  [{
-		"words": "公司端午节放假通知"
-	}, {
-		"words": "2021年端午节将至,根据国家法定假期规定,"
-	}, {
-		"words": "现对端午节假期作如下安排:"
-	}, {
-		"words": "放假时间:2020年6月12日(星期六)至"
-	}, {
-		"words": "2020年6月14日(星期一)共放假3天,6月15日"
-	}, {
-		"words": "(周二)正常上班"
-	}, {
-		"words": "、请各部门负责人做好节前的工作安排,检查"
-	}, {
-		"words": "相关设施、设备,做好防火、防盗工作,确保办公场"
-	}, {
-		"words": "所的安全、有序"
-	}, {
-		"words": "三、全体员工在假期间,尽量保持24小时手机开"
-	}, {
-		"words": "机,遇到突发事件及时上报,并妥善处理。"
-	}, {
-		"words": "温馨提示:疫情仍需重视,大家出门请务必戴好"
-	}, {
-		"words": "口罩,做好防护。"
-	}, {
-		"words": "请各位伙伴相互告知"
-	}, {
-		"words": "提前祝大家端午节假期愉快"
-	}, {
-		"words": "特此通知!"
-	}],
+    textData:  [],
   }
 })

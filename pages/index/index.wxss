@@ -11,6 +11,8 @@
   width: 200rpx;
   height: 200rpx;
   display: flex;
+  justify-self: center;
+  align-items: center;
   border: 4rpx solid #fff5f7;
   line-height: 200rpx;
   color: #fff5f7;

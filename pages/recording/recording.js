@@ -1,5 +1,6 @@
 // pages/recording/recording.js
 const app = getApp()
+const util = require('../../utils/util.js')
 Page({
   /**
    * 页面的初始数据
@@ -12,7 +13,10 @@ Page({
     skipCount: 0,
     scrollCount: 0,
     countResult: {},
-    refreFlage: true
+    refreFlage: true,
+    topNum:0,
+    floorstatus: false,
+    scrollThrottle: false
   },
 
   /**
@@ -76,10 +80,13 @@ Page({
         return;
       }
       console.log(res)
+      res.data.length && res.data.sort((a,b) => {return b.createTime - a.createTime});
       let _data = res.data.length && res.data.filter((item, index) => {
         if (item.copyText) {
           item.isCheck = false;
           item.copyText = item.copyText.slice(0,40);
+          // 格式化时间
+          item.time = util.formatTime(new Date(item.createTime));
           return item;
         }
       });
@@ -144,27 +151,32 @@ Page({
   },
   handleScrollBottom() {
     let that = this;
-    let count = 0;
     let _openid =  wx.getStorageSync('openid');
     if (that.data.artickeThrottle) return;
     that.getCollectionCount(_openid)
     that.data.artickeThrottle = true;
     setTimeout(() => {that.data.artickeThrottle = false}, 4000);
     that.data.scrollCount++;
-    console.log('countResult',that.data.countResult)
-    if (that.data.countResult.total < 10 || that.data.scrollCount > that.data.skipCount) {
-      return 
+    //  获取计算数据count分页  与 scrollCount 进行对比 
+    let page_paging = Math.ceil(that.data.countResult.total / 10);
+    // 先判断是否总条数大于10 true 不执行分页的流程 false 进行分页逻辑的比对
+    if (that.data.countResult.total < 10)  {
+      return;
     }
+
+    if (that.data.scrollCount >= page_paging) {
+      return; 
+    }
+    // 重新对分页数据进行赋值
+    that.setData({
+      skipCount: that.data.scrollCount
+    })
     this.getRecording();
   },
   async getCollectionCount(openid) {
     const db = wx.cloud.database();
     const countResult = await db.collection('todos_' +openid).count()
-    const batchTimes = Math.ceil(countResult.total / 100)
-    console.log('batchTimes', batchTimes, this.data.skipCount)
-
     this.setData({
-      skipCount: batchTimes,
       countResult: countResult
     })
 
@@ -197,6 +209,33 @@ Page({
       scrollCount: 0,
       recording_text: []
     });
+  },
+  // 回到顶部
+  handleIsTop() {
+    this.setData({
+      topNum: this.data.topNum = 0
+    })
+    console.log('回到顶部')
+  },
+  // 获取滚动条当前位置
+  scrolltoupper:function(e){
+    console.log(e)
+    if (this.data.scrollThrottle) return;
+    this.data.scrollThrottle = true;
+    setTimeout(() => {this.data.scrollThrottle = false}, 700);
+    let t =  e.detail.scrollTop;
+    if (t > 120 && !this.data.floorstatus) {
+    	// 避免重复setData
+    	this.setData({
+	       floorstatus: true
+	    });
+    } 
+    
+   	if(t <= 120 && this.data.floorstatus){
+  	  this.setData({
+        floorstatus: false
+      });
+   	}
   },
   /**
    * 页面相关事件处理函数--监听用户下拉动作

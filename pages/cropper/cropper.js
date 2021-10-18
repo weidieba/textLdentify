@@ -143,6 +143,7 @@ Page({
         let img_base = '';
         let that = this;
         let id = 'text' + uuid();
+        let current_time = 	Math.round(new Date());
         img_base = wx.getFileSystemManager().readFileSync(url, "base64");
         wx.showLoading({
             title: '加载中',
@@ -174,10 +175,12 @@ Page({
                     return pre
                 }, '')
                 // 云函数创建数据 
+                // 添加 时间戳 进行排序
                 getApp().callCloud("create", {
                     _id: id,
                     copyText: data,
-                    openid: _openid
+                    openid: _openid,
+                    createTime: current_time
                 }, res=>{
                     wx.navigateTo({
                         url: `/pages/text/text?textid=${id}`

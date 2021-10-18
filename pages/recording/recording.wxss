@@ -15,19 +15,28 @@
   position: relative;
 }
 
-.recording-conetnt {
+.recording-content {
   width: 330px;
   display: -webkit-box;
-  font-size:28rpx;
+  
   color:#000000;
   line-height: 40rpx;
-  word-break: break-all;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp:2;
-  overflow: hidden;
-  text-overflow:ellipsis;
   padding-left: 3px;
-  padding-right: 14px;
+  padding-right: 6px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.recording-content-text {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size:24rpx;
+}
+.recording-content-time {
+  width: 100%;
+  margin-top: 6px;
+  font-size:24rpx;
 }
 .recording-label image{
   width: 20px;
@@ -55,4 +64,20 @@
   width: 100%;
   font-size: 16px;
   text-align: center;
+}
+.is-top{
+  width: 80rpx;
+  height: 80rpx;
+  background-color: rgba(204,204,204,.5);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 60rpx;
+  bottom: 60rpx;
+}
+.is-top image {
+  width: 40rpx;
+  height: 40rpx;
 }
